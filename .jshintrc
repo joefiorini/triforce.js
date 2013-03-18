@@ -22,6 +22,8 @@
     "console": true,
     "Class": true,
     "Events": true,
-    "Options": true
+    "Options": true,
+    "$": true,
+    "$$": true
   }
 }
