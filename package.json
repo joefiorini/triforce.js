@@ -1,0 +1,12 @@
+{
+  "name": "triforce.js",
+  "version": "0.0.0",
+  "description": "A much simpler approach to Javscript MVC for small-medium sized web sites.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": "",
+  "author": "Joe Fiorini",
+  "license": "BSD"
+}
