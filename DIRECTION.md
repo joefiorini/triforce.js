@@ -13,6 +13,8 @@
       and promises rather than imperative event
       bindings
 
+## Basic Usage
+
 ```javascript
 // A feature is a $3.triad; a small MVC grouping
 App.TaskInput = $3.Triad(function(model, view, controller){

@@ -23,7 +23,7 @@
     window.addEventListener('load', function onLoad(){
 
       setTimeout(function(){
-        require(['tests/core-test'], function(){
+        require(['tests/core-test', 'tests/triad-test'], function(){
           QUnit.start();
         });
       }, 10);

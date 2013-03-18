@@ -6,7 +6,7 @@
   "eqeqeq": true,
   "immed": true,
   "latedef": true,
-  "newcap": true,
+  "newcap": false,
   "noarg": true,
   "sub": true,
   "undef": true,
@@ -16,7 +16,6 @@
   "globals": {
     "test": true,
     "module": true,
-    "ok": true,
     "define": true,
     "sinon": true,
     "require": true,
