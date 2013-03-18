@@ -38,4 +38,8 @@ App.TaskInput = $3.Triad(function(model, view, controller){
   view.wrap("new-todo");  // for wrapping existing dom elements
 
 });
+
+// Tie together a model (resource), triad and (optional) URL
+$3(App.Task, App.TaskInput, { new: true });
+$3(App.Task, App.TaskList, "/tasks");
 ```
