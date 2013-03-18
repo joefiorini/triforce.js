@@ -18,5 +18,9 @@
   },
   "repository": "",
   "author": "Joe Fiorini",
-  "license": "BSD"
+  "license": "BSD",
+  "dependencies": {
+    "mootools-core": "~1.3.2",
+    "mootools-more": "~1.4.0-1"
+  }
 }

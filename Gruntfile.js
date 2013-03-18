@@ -39,6 +39,18 @@ module.exports = function(grunt){
       compile: {
         options: {
           baseUrl: "lib",
+          shim: {
+          'mootools-core': {
+          exports: 'MooTools'
+          },
+          'mootools-more': {
+          exports: 'MooTools.More'
+          }
+          },
+          paths: {
+            "mootools-core": "../vendor/mootools-core",
+            "mootools-more": "../vendor/mootools-more"
+          },
           modules: [{ name: "main" }],
           optimize: 'uglify2',
           preserveLicenseComments: false,

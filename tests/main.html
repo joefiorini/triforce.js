@@ -13,8 +13,18 @@
   <script>
     require.config({
       baseUrl: "/lib",
+      shim: {
+        'mootools-core': {
+          exports: 'MooTools'
+        },
+        'mootools-more': {
+          exports: 'MooTools.More'
+        }
+      },
       paths: {
-        "tests": "/tests"
+        "tests": "/tests",
+        "mootools-core": "/vendor/mootools-core",
+        "mootools-more": "/vendor/mootools-more"
       }
     });
 
