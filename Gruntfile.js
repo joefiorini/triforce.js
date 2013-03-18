@@ -40,16 +40,26 @@ module.exports = function(grunt){
         options: {
           baseUrl: "lib",
           shim: {
-          'mootools-core': {
-          exports: 'MooTools'
-          },
-          'mootools-more': {
-          exports: 'MooTools.More'
-          }
+            'mootools-core': {
+              exports: 'MooTools'
+            },
+            'mootools-more': {
+              exports: 'MooTools.More'
+            },
+            'functools': {
+              deps: ['mootools-core'],
+              exports: 'functools'
+            },
+            'promises': {
+              deps: ['functools'],
+              exports: 'Promises'
+            }
           },
           paths: {
             "mootools-core": "../vendor/mootools-core",
-            "mootools-more": "../vendor/mootools-more"
+            "mootools-more": "../vendor/mootools-more",
+            "functools": "../vendor/functools",
+            "promises": "../vendor/promises"
           },
           modules: [{ name: "main" }],
           optimize: 'uglify2',

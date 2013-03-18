@@ -19,12 +19,22 @@
         },
         'mootools-more': {
           exports: 'MooTools.More'
+        },
+        'functools': {
+          deps: ['mootools-core'],
+          exports: 'functools'
+        },
+        'promises': {
+          deps: ['functools'],
+          exports: 'Promises'
         }
       },
       paths: {
         "tests": "/tests",
         "mootools-core": "/vendor/mootools-core",
-        "mootools-more": "/vendor/mootools-more"
+        "mootools-more": "/vendor/mootools-more",
+        "functools": "/vendor/functools",
+        "promises": "/vendor/promises"
       }
     });
 
@@ -33,7 +43,7 @@
     window.addEventListener('load', function onLoad(){
 
       setTimeout(function(){
-        require(['tests/core-test', 'tests/triad-test'], function(){
+        require(['tests/core-test', 'tests/triad-test', 'tests/event-stream-test'], function(){
           QUnit.start();
         });
       }, 10);

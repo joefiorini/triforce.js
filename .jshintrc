@@ -19,6 +19,9 @@
     "define": true,
     "sinon": true,
     "require": true,
-    "console": true
+    "console": true,
+    "Class": true,
+    "Events": true,
+    "Options": true
   }
 }
