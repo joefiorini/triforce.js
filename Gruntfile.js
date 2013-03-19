@@ -7,6 +7,7 @@ module.exports = function(grunt){
   grunt.loadNpmTasks("grunt-contrib-qunit");
   grunt.loadNpmTasks("grunt-contrib-connect");
   grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-contrib-watch");
 
   grunt.initConfig({
     qunit: {
@@ -70,6 +71,13 @@ module.exports = function(grunt){
       }
     },
 
+    watch: {
+      tests: {
+        files: ['tests/**/*.js', 'lib/**/*.js', 'vendor/**/*.js'],
+        tasks: ['jshint', 'qunit']
+      }
+    },
+
     copy: {
       main: {
         files: [
@@ -80,6 +88,6 @@ module.exports = function(grunt){
     }
   });
 
-  grunt.registerTask('default', ['jshint', 'connect', 'qunit']);
+  grunt.registerTask('default', ['connect', 'watch']);
   grunt.registerTask('build', ['requirejs', 'copy']);
 };
