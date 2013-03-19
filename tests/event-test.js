@@ -12,15 +12,31 @@ define(['mootools-core', 'event'], function(_,Event){
   test("binds to events using promise-style callbacks", function(assert){
     var called = false,
         obj = new Evented(),
-        stream = new Event(obj);
+        subscribe = new Event(obj).on("change");
 
-    stream.on("change").then(function(){
+    subscribe.onValue(function(){
       called = true;
     });
 
     obj.trigger();
 
     assert.ok(called, "event was triggered");
+
+  });
+
+  test("stays bound after firing", function(assert){
+    var called = 0,
+        obj = new Evented(),
+        subscribe = new Event(obj).on("change");
+
+    subscribe.onValue(function(){
+      called++;
+    });
+
+    obj.trigger();
+    obj.trigger();
+
+    assert.equal(called, 2, "handler called twice");
 
   });
 

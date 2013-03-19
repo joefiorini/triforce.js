@@ -12,7 +12,7 @@ define(['mootools-core', 'events/dom'], function(_,Events){
   test("binds to DOM events given selector and event name", function(assert){
     var stream = new Events.DOM($target);
 
-    stream.on("click").then(function(){
+    stream.on("click").onValue(function(){
       called = true;
     });
 
@@ -32,7 +32,7 @@ define(['mootools-core', 'events/dom'], function(_,Events){
   test("binds to keydown and triggers on given key", function(assert){
     var stream = new Events.DOM.Keyboard("a", $target);
 
-    stream.then(function(e){
+    stream.onValue(function(e){
       called = e.key;
     });
 
