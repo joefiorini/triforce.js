@@ -39,6 +39,18 @@ App.TaskInput = $3.Triad(function(model, view, controller){
 
 });
 
+// Define a custom m/v/c object for a triad
+//  App.TaskInput.defController vs.
+//  App.TaskInput.def("controller", ...) vs.
+//  App.TaskInput.define("controller", ...) vs.
+//  App.TaskInput.classFor("controller", ...)
+
+App.TaskInput.classFor("controller", {
+  loadTask: function(task){
+    this.redirectTo("/tasks/" + task.id);
+  }
+});
+
 // Tie together a model (resource), triad and (optional) URL
 $3(App.Task, App.TaskInput, { new: true });
 $3(App.Task, App.TaskList, "/tasks");
