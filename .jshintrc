@@ -23,6 +23,7 @@
     "Class": true,
     "Events": true,
     "Options": true,
+    "Element": true,
     "$": true,
     "$$": true
   }
