@@ -15,6 +15,9 @@
   "browser": true,
   "globals": {
     "test": true,
+    "asyncTest": true,
+    "start": true,
+    "expect": true,
     "module": true,
     "define": true,
     "sinon": true,

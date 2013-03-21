@@ -23,16 +23,17 @@ App.TaskInput = $3.Triad(function(model, view, controller){
     title: $3.elementValue("new-todo") // creates a "value" binding to element with id "task-input"
   });
 
-  controller.when("keydown:keys(enter)").        // binds to keydown of view's element
-    with(function(){ new Date().getTime(); }).   // creates additional values to get passed to mapTo, in order called
-    mapTo(function(id, model){                   // maps stream values to new model instances
+  controller.on($3.keyBehavior("enter", { down: true })).        // binds to keydown of view's element
+    mapTo(function(){                                 // maps stream values to new model instances
       return {
         id: id,
         title: model.title.map(".trim"),
         complete: false
       }
     }).
-    onValue(model.todoAdded).                         // Called once the value stream is complete
+    onValue(function(){
+      model.save();
+    }).                         // Called once the value stream is complete
     also(function(view){ view.set("value", ""); });   // Called in parallel to the event binding
 
   view.wrap("new-todo");  // for wrapping existing dom elements
