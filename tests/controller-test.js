@@ -1,28 +1,40 @@
-define(['controller', 'mootools-core'], function(Controller){
+// define(['controller', 'mootools-core'], function(Controller){
 
-  test("delegates its el to view's el", function(assert){
+//   var el, view, called, controller;
 
-    var el = $("qunit-fixture"),
-        view = { el: el },
-        controller = new Controller(view);
+//   module("$3.Controller", {
+//     setup: function(){
+//       el = $("qunit-fixture");
+//       view = { el: el };
+//       controller = new Controller(view);
+//       called = false;
+//     }
+//   });
 
-    assert.equal(controller.el, el);
-  });
+//   test("delegates its el to view's el", function(assert){
+//     assert.equal(controller.el, el);
+//   });
 
-  test("subscribes to events on view's el", function(assert){
+//   test("subscribes to events on view's el", function(assert){
 
-    var el = $("qunit-fixture"),
-        view = { el: el },
-        called = false,
-        controller = new Controller(view);
+//     controller.when('click').onValue(function(){
+//       called = true;
+//     });
 
-    controller.when('click').onValue(function(){
-      called = true;
-    });
+//     view.el.fireEvent('click');
 
-    view.el.fireEvent('click');
+//     assert.equal(called, true, "view's click event triggered on controller");
+//   });
 
-    assert.equal(called, true, "view's click event triggered on controller");
-  });
+//   test("can map event subscriptions", function(assert){
 
-});
+//     controller.when('keyDown').mapTo(function(e){
+//       return e.key;
+//     }).onValue(function(value){
+//       assert.equal(value, ['e']);
+//     });
+
+//     el.fireEvent('keyDown', { key: 'e' });
+//   });
+
+// });
