@@ -41,10 +41,9 @@ App.TaskInput = $3.Triad(function(model, view, controller){
 });
 
 // Define a custom m/v/c object for a triad
-//  App.TaskInput.defController vs.
-//  App.TaskInput.def("controller", ...) vs.
 //  App.TaskInput.define("controller", ...) vs.
-//  App.TaskInput.classFor("controller", ...)
+//  App.TaskInput.classFor("controller", ...) vs.
+//  App.TaskInput.controllerClass({ });
 
 App.TaskInput.classFor("controller", {
   loadTask: function(task){
@@ -52,7 +51,115 @@ App.TaskInput.classFor("controller", {
   }
 });
 
-// Tie together a model (resource), triad and (optional) URL
-$3(App.Task, App.TaskInput, { new: true });
-$3(App.Task, App.TaskList, "/tasks");
+// Tie together a model (resource), triad and (optional) URL or .el
+$3(App.TaskInput, App.Task, { new: true });
+$3(App.TaskList, App.Task, "/tasks");
 ```
+
+## Konami Code
+```javascript
+App.Konami = function(controller){
+var sequence = ["up", "up", "down", "down", "left", "right", "left", "right", "b", "a"];
+controller.on($3.keyBehavior({ up: true })).
+  mapTo(function(e) { e.key }).
+  first(10).
+  where(function(x){ x.equals(sequence) }).
+  onValue(function(){
+    $("result").html("KONAMI!");
+  });
+}
+
+$(App.Konami, document);
+```
+
+## Show Form
+```javascript
+App.ShowForm = function(controller,_,view){
+
+  // controller.doAjax => AjaxBehavior, ".href" => select href from view's el
+  controller.
+    on($3.clickBehavior("[data-action=show-form]").
+    mapTo(function(e){ return e.target.get("href"); }).
+    selectFrom(function(href){
+      return $3.ajaxBehavior(href).mapTo(function(res){
+        return res.templates.task_form;
+      })
+    }).
+    onValue(function(form){
+      view.adopt(form);
+    });
+}
+
+$3(App.ShowForm, App.ServerTemplates, "[data-container-name=task-form-container]");
+```
+
+## New Ideas (22-03-2013)
+
+```javascript
+
+$3.Triad(App.ShowForm, function(controller, model, view){
+
+  // Need some way to make views declarative;
+  //  starting out with state definitions
+
+  var invalidField = $3.viewState({
+    on: function(message, el){
+      el = jQuery(el); // wrap with jQuery to make translating easier
+      var message = el.wrap("<small>").text(message).addClass("error").addClass(el.className);
+      el.addClass("red").after(message);
+    },
+    off: function(el){
+      el = jQuery(el);
+      el.removeClass("red").next("small").remove();
+    }
+  });
+
+  view.defineState("error", {
+    "form :input": invalidField
+  });
+
+  controller.click("button.go-back").
+    mapTo(function(){
+      return $3.routeUrlFor(App.Root);
+    });
+    onValue($3.navigate);
+
+  var stripeRequest = $3.ajaxBehavior(...);
+
+  var product = $3.modelFor(App.Product);
+
+  controller.submit("form").
+    mapTo(function(form){
+        return {
+          params: {
+            number: view.$(".card-number").val(),
+            cvc: view.$(".card-cvc").val(),
+            exp_month: view.$(".card-expiry-month").val(),
+            exp_year: view.$(".card-expiry-year").val(),
+            name: view.$("#customer_name").val(),
+            email: view.$("#customer_email").val(),
+          },
+          amount: product.cost
+        }
+    }).
+    convertTo(function(req){
+        return $3._.stripeTokenBehavior(req.params, req.amount);
+    }).
+    onValue(...
+
+  /*
+    the previous line is the same as:
+    onValue(function(value){
+     $3.navigate(value);
+    }
+    because the map before it returns the url,
+    it gets passed to onValue
+  */
+});
+
+// Routes - tie together a triad, model and uri and/or DOM container
+$3.Routes(function(){
+  $3(App.Root, { url: "", container: $3.container("buy-container") });
+  $3(App.ShowForm, App.UserTest, $3.container("task-form-container"));
+  $3(App.PurchaseForm, App.Customer, { url: "buy", container: $3.container("buy-container")});
+});
