@@ -38,17 +38,8 @@ module.exports = function(grunt){
       }
     },
 
-    connect: {
-      server: {
-        options: {
-          port: 8000,
-          base: '.'
-        }
-      }
-    },
-
     jshint: {
-      all: ['Gruntfile.js', 'lib/**/*.js', 'tests/**/*.js', '!vendor/*.*', '!tests/vendor/*.*'],
+      all: ['!Gruntfile.js', 'lib/**/*.js', 'tests/**/*.js', '!vendor/*.*', '!tests/vendor/*.*'],
       options: {
         jshintrc: '.jshintrc'
       }
@@ -105,6 +96,12 @@ module.exports = function(grunt){
     },
 
     connect: {
+      server: {
+        options: {
+          port: 8000,
+          base: '.'
+        }
+      },
       examples: {
         options: {
           port: 9001,
@@ -123,6 +120,6 @@ module.exports = function(grunt){
 
   });
 
-  grunt.registerTask('default', ['connect', 'watch']);
-  grunt.registerTask('build', ['requirejs', 'copy']);
+  grunt.registerTask('default', ['connect:server', 'watch']);
+  grunt.registerTask('build', ['jshint', 'requirejs', 'copy']);
 };
