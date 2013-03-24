@@ -3,21 +3,25 @@ define(['triad', 'model', 'view', 'controller'],
 
   module("$3.Triad");
 
-  test("calls given function", function(assert){
+  test("defers the given function until setup is called", function(assert){
     var called = false;
 
-    Triad(function(){ called = true; });
+    var feature = Triad(function(){ called = true; });
+
+    feature.setup();
 
     assert.equal(called, true);
   });
 
   test("passes Triad m/v/c arguments", function(assert){
     var args;
-    Triad(function(){
+    var feature = Triad(function(){
       args = Array.prototype.slice.call(arguments);
     });
 
-    assert.ok(args.length, 3, "calls function with 3 arguments");
+    feature.setup();
+
+    assert.equal(args.length, 3, "calls function with 3 arguments");
     assert.ok(args[0] instanceof Controller, "third argument is instance of controller");
     assert.ok(args[1] instanceof Model, "first argument is instance of model");
     assert.ok(args[2] instanceof View, "second argument is instance of view");
@@ -26,13 +30,16 @@ define(['triad', 'model', 'view', 'controller'],
   test("passes new objects every time its called", function(assert){
     var args, newArgs;
 
-    Triad(function(){
+    var f1 = Triad(function(){
       args = Array.prototype.slice.call(arguments);
     });
 
-    Triad(function(){
+    var f2 = Triad(function(){
       newArgs = Array.prototype.slice.call(arguments);
     });
+
+    f1.setup();
+    f2.setup();
 
     assert.notEqual(args[0], newArgs[0], "gets new controller instance");
     assert.notEqual(args[1], newArgs[1], "gets new model instance");
@@ -45,6 +52,8 @@ define(['triad', 'model', 'view', 'controller'],
         feature = Triad(function(){
           args = Array.prototype.slice.call(arguments);
         });
+
+    feature.setup();
 
     assert.equal(args[0], feature.controller, "returns feature with controller");
     assert.equal(args[1], feature.model, "returns feature with model");
