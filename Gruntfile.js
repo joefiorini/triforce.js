@@ -10,21 +10,34 @@ module.exports = function(grunt){
   grunt.loadNpmTasks("grunt-contrib-watch");
 
   function serveTriforce(base){
-      return function(req, res, next){
-        if(req.url == "/triforce-latest.js"){
-          fs = require("fs");
-          var triforcePath = base + "/../dist/triforce.js";
-          fs.readFile(triforcePath, function(err,data){
-            if(!err){
-              res.end(data);
-            } else {
-              return next();
-            }
-          });
+    function serveFile(res, next, path){
+      fs.readFile(path, function(err,data){
+        if(!err){
+          res.end(data);
         } else {
           return next();
         }
+      });
+    }
+
+    return function(req, res, next){
+
+      serveFile1 = serveFile.bind(this, res, next);
+
+      if(req.url == "/triforce-latest.js"){
+        fs = require("fs");
+        var triforcePath = base + "/../dist/triforce.js";
+        serveFile1(triforcePath);
+      } else if(req.url.match(/\.map$/)){
+        var path = base + "/../dist" + req.url;
+        serveFile1(path);
+      } else if(req.url.match(/\.src$/)){
+        var path = base + "/../dist" + req.url;
+        serveFile1(path);
+      } else {
+        return next();
       }
+    }
   }
 
   grunt.initConfig({
