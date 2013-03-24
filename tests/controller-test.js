@@ -1,40 +1,74 @@
-// define(['controller', 'mootools-core'], function(Controller){
+define(['controller', 'behaviors', 'mootools-core'], function(Controller, B){
 
-//   var el, view, called, controller;
+  var el, view, called, controller;
 
-//   module("$3.Controller", {
-//     setup: function(){
-//       el = $("qunit-fixture");
-//       view = { el: el };
-//       controller = new Controller(view);
-//       called = false;
-//     }
-//   });
+  module("$3.Controller", {
+    setup: function(){
+      el = $("qunit-fixture");
+      view = { el: el };
+      controller = new Controller(view);
+      called = false;
+    }
+  });
 
-//   test("delegates its el to view's el", function(assert){
-//     assert.equal(controller.el, el);
-//   });
+  test("implements behavior dsl", function(assert){
+    assert.ok(controller.setupListener, "has setupListener method");
+    assert.ok(controller.convertsValue, "has convertsValue method");
+  });
 
-//   test("subscribes to events on view's el", function(assert){
+  test("responds to event", function(assert){
+    var called = false;
 
-//     controller.when('click').onValue(function(){
-//       called = true;
-//     });
+    controller.then(function(v){
+      called = true;
+    });
 
-//     view.el.fireEvent('click');
+    controller.setupListener(B.DOM.click(view.el));
 
-//     assert.equal(called, true, "view's click event triggered on controller");
-//   });
+    view.el.fireEvent("click");
 
-//   test("can map event subscriptions", function(assert){
+    assert.equal(called, true);
+  });
 
-//     controller.when('keyDown').mapTo(function(e){
-//       return e.key;
-//     }).onValue(function(value){
-//       assert.equal(value, ['e']);
-//     });
+  test("allows converting values", function(assert){
+    var actual;
 
-//     el.fireEvent('keyDown', { key: 'e' });
-//   });
+    controller.convertsValue(function(){
+      return "blah";
+    });
 
-// });
+    controller.then(function(v){
+      actual = v;
+    });
+
+    controller.setupListener(B.DOM.click(view.el));
+
+    view.el.fireEvent("click");
+
+    assert.equal(actual, "blah");
+  });
+
+  test("passes converted values through stream", function(assert){
+    var actual = [], inter = [];
+
+    controller.convertsValue(function(val){
+      return val.trim();
+    });
+
+    controller.rejectsValue(function(val){
+      inter.push(val);
+      return val.length === 0;
+    });
+
+    controller.then(function(v){
+      actual.push(v);
+    });
+
+    controller.setupListener(B.Array.each(["  blah  ", "  diddy   ", "   "]));
+
+    assert.deepEqual(inter, ["blah", "diddy", ""]);
+    assert.deepEqual(actual, ["blah", "diddy"]);
+
+  });
+
+});
