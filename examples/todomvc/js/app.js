@@ -1,10 +1,20 @@
 (function( window ) {
-	'use strict';
+  'use strict';
 
-  define('todomvc', ['triforce', 'require'], function($3, require){
+  define('todomvc', ['triforce', 'features/new-todo', 'models/todos'], function($3, NewTodo, Todos){
 
-    return {};
+    var NewTodo = require("features/new-todo"),
+        Todos = require("models/todos");
+
+    var todos = new Todos();
+
+    // Bind features to model & entry point (event or URI)
+
+    $3(NewTodo, todos, $3.DOM.enterKey);
+
+    return {
+      NewTodo: NewTodo
+    };
   });
-	// Your starting point. Enjoy the ride!
 
 })( window );
