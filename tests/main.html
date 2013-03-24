@@ -23,6 +23,7 @@
       },
       paths: {
         "tests": "/tests",
+        "triforce": "main",
         "mootools-core": "/vendor/mootools-core",
         "mootools-more": "/vendor/mootools-more"
       }
@@ -33,7 +34,7 @@
     window.addEventListener('load', function onLoad(){
 
       setTimeout(function(){
-        require(['tests/core-test', 'tests/triad-test', 'tests/event-test', 'tests/events/dom-test', 'tests/model-test', 'tests/controller-test', 'tests/bindings-test', 'tests/behavior-test', 'tests/factories-test'], function(){
+        require(['tests/triforce-test', 'tests/triad-test', 'tests/event-test', 'tests/events/dom-test', 'tests/model-test', 'tests/controller-test', 'tests/bindings-test', 'tests/behavior-test', 'tests/factories-test'], function(){
           QUnit.start();
         });
       }, 10);

@@ -1,6 +1,6 @@
-define(['core'], function($3){
+define(['triforce'], function($3){
 
-  module("Core Tests");
+  module("Triforce Root API Tests");
 
   test("$3 is an object", function(assert){
     assert.equal(typeof $3, "object", "$3 is a valid object");
