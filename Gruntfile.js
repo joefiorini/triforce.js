@@ -75,12 +75,11 @@ module.exports = function(grunt){
             }
           },
           paths: {
+            "triforce": "main",
             "mootools-core": "../vendor/mootools-core",
-            "mootools-more": "../vendor/mootools-more",
-            "functools": "../vendor/functools",
-            "promises": "../vendor/promises"
+            "mootools-more": "../vendor/mootools-more"
           },
-          modules: [{ name: "main" }],
+          modules: [{ name: "triforce" }],
           optimize: 'uglify2',
           preserveLicenseComments: false,
           generateSourceMaps: true,
