@@ -11,6 +11,10 @@
   <script src="/node_modules/requirejs/require.js"></script>
   <script src="/tests/vendor/qunit.js"></script>
   <script>
+    QUnit.config.autostart = false;
+    window.removeEventListener("load", QUnit.load);
+    QUnit.load();
+
     require.config({
       baseUrl: "/lib",
       shim: {
@@ -29,19 +33,10 @@
       }
     });
 
-    QUnit.config.autostart = false;
+    require(['tests/triforce-test', 'tests/triad-test', 'tests/event-test', 'tests/events/dom-test', 'tests/model-test', 'tests/controller-test', 'tests/bindings-test', 'tests/behavior-test', 'tests/behaviors/dom-test'], function(){
+      QUnit.start();
+    });
 
-    window.addEventListener('load', function onLoad(){
-
-      setTimeout(function(){
-        require(['tests/triforce-test', 'tests/triad-test', 'tests/event-test', 'tests/events/dom-test', 'tests/model-test', 'tests/controller-test', 'tests/bindings-test', 'tests/behavior-test', 'tests/behaviors/dom-test'], function(){
-          QUnit.start();
-        });
-      }, 10);
-
-      window.removeEventListener('load', onLoad, true);
-
-    }, true);
   </script>
 </body>
 </html>
