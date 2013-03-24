@@ -1,4 +1,4 @@
-define(['factories'], function($3){
+define(['behaviors/dom'], function(Behaviors){
 
   var called;
 
@@ -9,7 +9,7 @@ define(['factories'], function($3){
   });
 
   test("click", function(assert){
-    var behavior = $3.DOM.click("#qunit-fixture");
+    var behavior = Behaviors.click("#qunit-fixture");
 
     behavior.onValue(function(){
       called = true;
@@ -24,7 +24,7 @@ define(['factories'], function($3){
     var input = new Element("input", { type: "text" });
     $("qunit-fixture").adopt(input);
 
-    var behavior = $3.DOM.change("input");
+    var behavior = Behaviors.change("input");
 
     behavior.onValue(function(val){
       called = true;
@@ -36,10 +36,26 @@ define(['factories'], function($3){
   });
 
   test("mouseenter", function(assert){
-    expectTrigger($3.DOM.mouseEnter, "mouseenter", "#qunit-fixture", assert);
+    expectTrigger(Behaviors.mouseEnter, "mouseenter", "#qunit-fixture", assert);
   });
 
-  function expectTrigger(factory, evt, selector, assert){
+  test("enterKey", function(assert){
+    var input = new Element("input"),
+        behavior = Behaviors.enterKey(input),
+        actual;
+
+    $("qunit-fixture").adopt(input);
+
+    behavior.onValue(function(e){
+      actual = e.key;
+    });
+
+    input.fireEvent("keydown", { key: "enter" });
+
+    assert.equal(actual, "enter");
+  });
+
+  function expectTrigger(factory, evt, selector, assert, data){
     var behavior = factory("#qunit-fixture");
 
     behavior.onValue(function(){
