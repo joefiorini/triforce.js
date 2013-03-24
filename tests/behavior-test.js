@@ -1,4 +1,4 @@
-define(['behavior', 'utils', 'mootools-core'], function(Behavior, Utils){
+define(['behavior', 'behaviors', 'utils', 'mootools-core'], function(Behavior, B, Utils){
 
   var called, obj;
 
@@ -14,8 +14,6 @@ define(['behavior', 'utils', 'mootools-core'], function(Behavior, Utils){
 
       obj.handler = handler;
 
-      return function(){
-      };
     });
 
   }
@@ -132,6 +130,53 @@ define(['behavior', 'utils', 'mootools-core'], function(Behavior, Utils){
 
     expect.equal(index, vals.length - 1, "increments index");
 
+  });
+
+  test("allows rejecting values based on conditions", function(assert){
+
+    var actual = [];
+
+    var b = createBehavior(function(next, err, c, e){
+      next(1);
+      next(2);
+      next(3);
+      c();
+    });
+
+    var b2 = b.reject(function(val){
+      return val === 2;
+    });
+
+    b2.onValue(function(val){
+      actual.push(val);
+    });
+
+    obj.run(1);
+
+    assert.deepEqual(actual, [1,3]);
+  });
+
+  test("passes converted values through stream", function(assert){
+
+    var inter = [], actual = [], start = ["  blah  ", "  diddy  "];
+
+    var b = B.Array.each(start);
+
+    var b2 = b.map(function(val){
+      return val.trim();
+    });
+
+    var b3 = b2.reject(function(val){
+      inter.push(val);
+      return val === "diddy";
+    });
+
+    b3.onValue(function(val){
+      actual.push(val);
+    });
+
+    assert.deepEqual(inter, ["blah", "diddy"]);
+    assert.deepEqual(actual, ["blah"]);
   });
 
 });
