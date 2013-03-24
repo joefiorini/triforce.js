@@ -5,8 +5,10 @@ define(['triad', 'model', 'view', 'controller'],
 
   test("calls given function", function(assert){
     var called = false;
+
     Triad(function(){ called = true; });
-    assert.ok(called, "immediately invokes given function");
+
+    assert.equal(called, true);
   });
 
   test("passes Triad m/v/c arguments", function(assert){
@@ -14,6 +16,7 @@ define(['triad', 'model', 'view', 'controller'],
     Triad(function(){
       args = Array.prototype.slice.call(arguments);
     });
+
     assert.ok(args.length, 3, "calls function with 3 arguments");
     assert.ok(args[0] instanceof Controller, "third argument is instance of controller");
     assert.ok(args[1] instanceof Model, "first argument is instance of model");
