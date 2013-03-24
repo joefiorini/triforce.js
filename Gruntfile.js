@@ -9,6 +9,24 @@ module.exports = function(grunt){
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
 
+  function serveTriforce(base){
+      return function(req, res, next){
+        if(req.url == "/triforce-latest.js"){
+          fs = require("fs");
+          var triforcePath = base + "/../dist/triforce.js";
+          fs.readFile(triforcePath, function(err,data){
+            if(!err){
+              res.end(data);
+            } else {
+              return next();
+            }
+          });
+        } else {
+          return next();
+        }
+      }
+  }
+
   grunt.initConfig({
     qunit: {
       all: {
@@ -85,7 +103,25 @@ module.exports = function(grunt){
           { src: "tmp/*.map", dest: "dist/", flatten: true, expand: true, filter: "isFile" }
         ]
       }
+    },
+
+    connect: {
+      examples: {
+        options: {
+          port: 9001,
+          base: 'examples',
+          keepalive: true,
+          middleware: function(connect, options){
+            return [
+              serveTriforce(options.base),
+              connect.static(options.base),
+              connect.directory(options.base)
+            ];
+          }
+        }
+      }
     }
+
   });
 
   grunt.registerTask('default', ['connect', 'watch']);
