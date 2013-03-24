@@ -16,7 +16,8 @@
     "requirejs": "~2.1.5",
     "grunt-contrib-connect": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
-    "connect": "~2.7.3"
+    "connect": "~2.7.3",
+    "grunt-cli": "~0.1.6"
   },
   "repository": "",
   "author": "Joe Fiorini",
