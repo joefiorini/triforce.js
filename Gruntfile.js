@@ -71,9 +71,10 @@ module.exports = function(grunt){
             "mootools-more": "../vendor/mootools-more"
           },
           modules: [{ name: "triforce" }],
-          optimize: 'uglify2',
+          optimize: 'none',
           preserveLicenseComments: false,
           generateSourceMaps: true,
+          useSourceUrl: true,
           dir: "tmp/"
         }
       }
@@ -90,7 +91,8 @@ module.exports = function(grunt){
       main: {
         files: [
           { src: "tmp/main.js", dest: "dist/triforce.js" },
-          { src: "tmp/*.map", dest: "dist/", flatten: true, expand: true, filter: "isFile" }
+          { src: "tmp/*.map", dest: "dist/", flatten: true, expand: true, filter: "isFile" },
+          { src: "tmp/*.src", dest: "dist/", flatten: true, expand: true, filter: "isFile" }
         ]
       }
     },
