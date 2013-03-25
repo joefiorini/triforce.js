@@ -86,8 +86,6 @@ module.exports = function(grunt){
           modules: [{ name: "triforce" }],
           optimize: 'none',
           preserveLicenseComments: false,
-          generateSourceMaps: true,
-          useSourceUrl: true,
           dir: "tmp/"
         }
       }
