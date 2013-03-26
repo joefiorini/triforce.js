@@ -179,4 +179,38 @@ define(['behavior', 'behaviors', 'utils', 'mootools-core'], function(Behavior, B
     assert.deepEqual(actual, ["blah"]);
   });
 
+  test("invokes a function with the value", function(assert){
+    var actual = null;
+
+    var b = B.Array.each(["blah"]);
+
+    var b2 = b.run(function(value){
+      actual = value;
+    });
+
+    b2.onValue(function(){ });
+
+    assert.equal(actual, "blah");
+  });
+
+  test("allows converting behaviors midstream", function(assert){
+    var called = false, calledWith = null, actual = [];
+
+    var b1 = B.Array.each([1]);
+    var b2 = B.Array.each([4]);
+
+    var b3 = b1.convert(function(v){
+      calledWith = v;
+      return b2;
+    });
+
+    b3.onValue(function(v){
+      actual.push(v);
+    });
+
+    assert.equal(calledWith, 1);
+    assert.deepEqual(actual, [4]);
+
+  });
+
 });
