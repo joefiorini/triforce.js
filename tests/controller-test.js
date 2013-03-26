@@ -1,12 +1,18 @@
-define(['controller', 'behaviors', 'mootools-core'], function(Controller, B){
+define(['controller', 'model', 'behaviors', 'mootools-core'], function(Controller, Model, B){
 
-  var el, view, called, controller;
+  var el, view, called, controller, store, item;
 
   module("$3.Controller", {
     setup: function(){
       el = $("qunit-fixture");
       view = { el: el };
-      controller = new Controller(view);
+      item = { blah: "doo", _persisted: false };
+      store = {
+        _persisted: false,
+        save: function(item){ item._persisted = true; return item; }
+      };
+      var model = new Model(store);
+      controller = new Controller(view, model);
       called = false;
     }
   });
@@ -69,6 +75,26 @@ define(['controller', 'behaviors', 'mootools-core'], function(Controller, B){
     assert.deepEqual(inter, ["blah", "diddy", ""]);
     assert.deepEqual(actual, ["blah", "diddy"]);
 
+  });
+
+  test("allows saving model value based on current stream", function(assert){
+    var actual = null;
+
+    controller.convertsValue(function(val){
+      val.blah = "diddy";
+      return val;
+    });
+
+    controller.save();
+
+    controller.then(function(val){
+      actual = val;
+    });
+
+    controller.setupListener(B.Array.each([item]));
+
+    assert.equal(item._persisted, true, "saved model");
+    assert.equal(actual.blah, "diddy", "updated value");
   });
 
 });
