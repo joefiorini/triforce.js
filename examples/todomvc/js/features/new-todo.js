@@ -21,8 +21,11 @@
             title: value,
             completed: false
           }
-        }).then(model.addTodo).
-        transitionsView("readyForInput");
+        }).
+        save().
+        then(function(todo){
+          console.log("saved");
+        });
 
     });
 
