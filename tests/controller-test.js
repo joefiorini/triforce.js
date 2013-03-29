@@ -4,7 +4,7 @@ define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
 
   module("$3.Controller", {
     setup: function(){
-      el = $("qunit-fixture");
+      el = document.querySelector("#qunit-fixture");
       view = { el: el };
       item = { blah: "doo", _persisted: false };
       store = {
