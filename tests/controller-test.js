@@ -1,4 +1,4 @@
-define(['controller', 'model', 'behaviors', 'mootools-core'], function(Controller, Model, B){
+define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
 
   var el, view, called, controller, store, item;
 

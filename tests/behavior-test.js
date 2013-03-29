@@ -1,8 +1,8 @@
-define(['behavior', 'behaviors', 'utils', 'mootools-core'], function(Behavior, B, Utils){
+define(['behavior', 'behaviors', 'utils', 'prime'], function(Behavior, B, Utils, prime){
 
   var called, obj;
 
-  var Evented = new Class({
+  var Evented = prime({
     run: function(args){
       this.handler(args);
     }

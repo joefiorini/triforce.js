@@ -23,7 +23,7 @@
   "author": "Joe Fiorini",
   "license": "BSD",
   "dependencies": {
-    "mootools-core": "~1.3.2",
-    "mootools-more": "~1.4.0-1"
+    "prime": "~0.1.0",
+    "lodash": "~1.1.1"
   }
 }

@@ -15,25 +15,36 @@
     window.removeEventListener("load", QUnit.load);
     QUnit.load();
 
+    // hack because prime overrides define, oops
+    //  plan on removing requirejs soon, so it
+    //  will not be an issue much longer.
+    var saveDefine = define;
+
     require.config({
       baseUrl: "/lib",
       shim: {
-        'mootools-core': {
-          exports: 'MooTools'
-        },
-        'mootools-more': {
-          exports: 'MooTools.More'
+        'prime': {
+          exports: 'prime',
+          init: function(){
+            define = saveDefine;
+          }
         }
       },
       paths: {
         "tests": "/tests",
         "triforce": "main",
-        "mootools-core": "/vendor/mootools-core",
-        "mootools-more": "/vendor/mootools-more"
+        "underscore": "/node_modules/lodash/lodash",
+        "prime": "/node_modules/prime/index"
       }
     });
 
-    require(['tests/triforce-test', 'tests/triad-test', 'tests/event-test', 'tests/events/dom-test', 'tests/model-test', 'tests/controller-test', 'tests/bindings-test', 'tests/behavior-test', 'tests/behaviors/dom-test'], function(){
+    require(['underscore',
+             'tests/triforce-test',
+             'tests/triad-test',
+             'tests/model-test',
+             'tests/controller-test',
+             'tests/behavior-test',
+             'tests/behaviors/dom-test'], function(){
       QUnit.start();
     });
 

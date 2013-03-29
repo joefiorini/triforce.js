@@ -24,7 +24,7 @@
         }).
         save().
         then(function(todo){
-          console.log("saved");
+          controller.transitionView("newTodo", todo);
         });
 
     });
