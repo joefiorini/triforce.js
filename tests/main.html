@@ -15,35 +15,33 @@
     window.removeEventListener("load", QUnit.load);
     QUnit.load();
 
-    // hack because prime overrides define, oops
-    //  plan on removing requirejs soon, so it
-    //  will not be an issue much longer.
-    var saveDefine = define;
-
     require.config({
       baseUrl: "/lib",
       shim: {
         'prime': {
           exports: 'prime',
-          init: function(){
-            define = saveDefine;
-          }
+        },
+        'gator': {
+          exports: 'Gator'
         }
       },
       paths: {
         "tests": "/tests",
         "triforce": "main",
+        "gator": "/vendor/gator",
         "underscore": "/node_modules/lodash/lodash",
+        "bacon": "/node_modules/baconjs/dist/bacon",
         "prime": "/node_modules/prime/index"
       }
     });
 
     require(['underscore',
+             'bacon',
+             'gator',
              'tests/triforce-test',
              'tests/triad-test',
              'tests/model-test',
-             'tests/controller-test',
-             'tests/behavior-test'], function(){
+             'tests/controller-test'], function(){
       QUnit.start();
     });
 

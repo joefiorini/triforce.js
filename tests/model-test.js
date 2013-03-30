@@ -18,7 +18,7 @@ define(["model"], function(Model){
 
   });
 
-  test("wraps given finder in a behavior", function(assert){
+  test("wraps given finder in an observable", function(assert){
     var called = false, actual = null;
 
     var model = new Model({

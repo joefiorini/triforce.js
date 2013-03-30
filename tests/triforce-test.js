@@ -29,7 +29,7 @@ define(['triforce'], function($3){
 
     $3(TestFeature, $3.DOM.click);
 
-    $("qunit-fixture").fireEvent("click");
+    document.getElementById("qunit-fixture").click();
 
     assert.equal(called, true, "controller was notified of event");
   });

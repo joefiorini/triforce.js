@@ -24,6 +24,7 @@
   "license": "BSD",
   "dependencies": {
     "prime": "~0.1.0",
-    "lodash": "~1.1.1"
+    "lodash": "~1.1.1",
+    "baconjs": "~0.3.0"
   }
 }

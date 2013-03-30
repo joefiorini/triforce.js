@@ -1,4 +1,4 @@
-define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
+define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM, Bacon){
 
   var el, view, called, controller, store, item;
 
@@ -29,9 +29,9 @@ define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
       called = true;
     });
 
-    controller.setupListener(B.DOM.click(view.el));
+    controller.setupListener(DOM.click(view.el));
 
-    view.el.fireEvent("click");
+    view.el.click();
 
     assert.equal(called, true);
   });
@@ -47,9 +47,9 @@ define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
       actual = v;
     });
 
-    controller.setupListener(B.DOM.click(view.el));
+    controller.setupListener(DOM.click(view.el));
 
-    view.el.fireEvent("click");
+    view.el.click();
 
     assert.equal(actual, "blah");
   });
@@ -70,7 +70,7 @@ define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
       actual.push(v);
     });
 
-    controller.setupListener(B.Array.each(["  blah  ", "  diddy   ", "   "]));
+    controller.setupListener(Bacon.fromArray(["  blah  ", "  diddy   ", "   "]));
 
     assert.deepEqual(inter, ["blah", "diddy", ""]);
     assert.deepEqual(actual, ["blah", "diddy"]);
@@ -91,7 +91,7 @@ define(['controller', 'model', 'behaviors'], function(Controller, Model, B){
       actual = val;
     });
 
-    controller.setupListener(B.Array.each([item]));
+    controller.setupListener(Bacon.fromArray([item]));
 
     assert.equal(item._persisted, true, "saved model");
     assert.equal(actual.blah, "diddy", "updated value");
