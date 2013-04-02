@@ -63,25 +63,23 @@ module.exports = function(grunt){
         options: {
           baseUrl: "lib",
           shim: {
-            'mootools-core': {
-              exports: 'MooTools'
+            'prime': {
+              exports: 'prime'
             },
-            'mootools-more': {
-              exports: 'MooTools.More'
+            'gator': {
+              exports: 'Gator'
             },
-            'functools': {
-              deps: ['mootools-core'],
-              exports: 'functools'
-            },
-            'promises': {
-              deps: ['functools'],
-              exports: 'Promises'
+            'jwerty': {
+              exports: 'jwerty'
             }
           },
           paths: {
             "triforce": "main",
-            "mootools-core": "../vendor/mootools-core",
-            "mootools-more": "../vendor/mootools-more"
+            "gator": "../vendor/gator",
+            "jwerty": "../vendor/jwerty",
+            "underscore": "../node_modules/lodash/lodash",
+            "bacon": "../node_modules/baconjs/dist/bacon",
+            "prime": "../node_modules/prime/index"
           },
           modules: [{ name: "triforce" }],
           optimize: 'none',
