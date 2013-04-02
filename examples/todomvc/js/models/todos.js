@@ -1,7 +1,7 @@
 (function(window){
   'use strict';
 
-  define(['triforce'], function($3){
+  define(['triforce', 'lodash'], function($3, _){
 
     var TodoStorage = {
       loadAll: function(){
@@ -28,9 +28,8 @@
               return item.id === todo.id;
             });
 
-        todos.erase(candidate);
-        todos.push(todo);
-        window.localStorage.setItem("todos", JSON.stringify(todos));
+        todos = _(todos).without(candidate).union([todo]);
+        window.localStorage.setItem("todos", JSON.stringify(todos.value()));
       }
     }
 

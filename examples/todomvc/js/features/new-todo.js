@@ -12,7 +12,7 @@
       });
 
       controller.convertsValue(function(value){
-          return view.get("value")[0].trim();
+          return view.get("value").trim();
         }).rejectsValue(function(value){
           return value.length == 0;
         }).respondsWith(function(value){
@@ -24,7 +24,8 @@
         }).
         save().
         then(function(todo){
-          controller.transitionView("newTodo", todo);
+          console.log("done");
+          view.set("value", "");
         });
 
     });
