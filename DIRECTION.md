@@ -13,6 +13,19 @@
       and promises rather than imperative event
       bindings
 
+## Eventual Support.todo
+
+Eventually Triforce.js needs to support the following features:
+
+- Wiring up a controller, model to an "entry point" (URL or DOM event) @done
+- Rendering templates via an engine-specific "render"
+- Specifying templates via HTML elements
+- Models as anonymous objects with a specified "sync" function (to connect to ajax, localstore, whatever)
+- Implicit creation of primary objects @done
+- Feature-based organization as a core principle @done
+- Side-loading templates from model "sync" object
+- Declaring view states via entry/exit functions
+
 ## Basic Usage
 
 ```javascript

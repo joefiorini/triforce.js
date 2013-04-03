@@ -7,12 +7,13 @@ define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM,
       el = document.querySelector("#qunit-fixture");
       view = { el: el };
       item = { blah: "doo", _persisted: false };
-      store = {
-        _persisted: false,
-        save: function(item){ item._persisted = true; return item; }
-      };
-      var model = new Model(store);
-      controller = new Controller(view, model);
+      var ModelC = Model.define(function(sync){
+        sync.save = function(item){
+          item._persisted = true;
+          return item;
+        };
+      });
+      controller = new Controller(view, new ModelC(item));
       called = false;
     }
   });
