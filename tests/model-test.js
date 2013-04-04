@@ -81,7 +81,7 @@ define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
     var Person = Model.define(new Sync(function(sync){
       sync.find = function(){
         calledLocal = true;
-      }
+      };
     }));
 
     Person.find().onValue(noop);
@@ -94,7 +94,7 @@ define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
   test("sync functions are observable", function(assert){
     var called = false, actual = null, created = null, saved = false, instance;
 
-    var model = Model.define(new Sync(function(sync){
+    var ModelC = Model.define(new Sync(function(sync){
       sync.find = function(query){
         called = true;
         return { id: query.id };
@@ -112,15 +112,15 @@ define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
 
     }));
 
-    model.find({id: 1}).onValue(function(item){
+    ModelC.find({id: 1}).onValue(function(item){
       actual = item;
     });
 
-    model.create({id: 1, name: "joe"}).onValue(function(item){
+    ModelC.create({id: 1, name: "joe"}).onValue(function(item){
       created = item;
     });
 
-    instance = new model;
+    instance = new ModelC();
 
     instance.save().onValue(function(item){
       saved = true;
