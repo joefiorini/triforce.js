@@ -34,6 +34,27 @@ define(['triforce'], function($3){
     assert.equal(called, true, "controller was notified of event");
   });
 
+  test("continues listening to entry-point after first call", function(assert){
+    var called = 0;
+
+    var TestFeature = $3.Triad(function(c,m,v){
+      v.wraps("#qunit-fixture");
+
+      c.then(function(){
+        called++;
+      });
+    });
+
+    $3(TestFeature, $3.DOM.click);
+
+    document.getElementById("qunit-fixture").click();
+    assert.equal(called, 1, "event triggered once");
+
+    document.getElementById("qunit-fixture").click();
+    assert.equal(called, 2, "event triggered twice");
+
+  });
+
   test("uses given model instance", function(assert){
     var actual = null,
         model;

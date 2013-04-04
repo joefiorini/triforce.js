@@ -1,11 +1,21 @@
-define(["model"], function(Model){
+define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
 
-  var person = new Model(null, {
-    firstName: "Bob",
-    lastName: "Belcher"
+  var person;
+  var noop = function(){ };
+
+  module("$3.Model", {
+    setup: function(){
+      console.log("setup");
+      person = new Model({
+        firstName: "Bob",
+        lastName: "Belcher"
+      });
+    }
   });
 
-  module("$3.Model");
+  test("can define a model", function(assert){
+    assert.equal($3.model(), Model.define());
+  });
 
   test("can decorate model with additional attributes", function(assert){
     person.decorate({
@@ -18,41 +28,108 @@ define(["model"], function(Model){
 
   });
 
-  test("wraps given finder in an observable", function(assert){
-    var called = false, actual = null;
+  module("$3.Model#sync");
 
-    var model = new Model({
-      find: function(id){
+  test("uses sync for given model", function(assert){
+
+    var called = false,
+        actual = null;
+
+    var sync = new Sync(function(sync){
+      sync.find = function(query){
         called = true;
-        return { id: id };
-      }
+        actual = query;
+      };
     });
 
-    model.loadItem(1).onValue(function(item){
-      actual = item;
-    });
+    var Person = Model.define(sync);
 
-    assert.equal(called, true, "finder was called");
-    assert.equal(actual.id, 1, "id was set");
+    Person.find({ id: 1 }).onValue(noop);
+
+    assert.equal(called, true, "find was called");
+    assert.deepEqual(actual, { id: 1 }, "received query parameter");
+
   });
 
-  test("wraps saving in a behavior", function(assert){
-    var called = false, actual = null, item = { id: 1 };
+  test("uses globally defined sync", function(assert){
+    var called = false;
 
-    var model = new Model({
-      save: function(item){
-        item._persisted = true;
+    $3.sync(function(sync){
+      sync.find = function(query){
         called = true;
-        return item;
-      }
+      };
     });
 
-    model.saveItem(item).onValue(function(item){
+    var Person = Model.define();
+
+    Person.find().onValue(noop);
+
+    assert.equal(called, true);
+
+  });
+
+  test("model sync overrides global sync", function(assert){
+    var calledGlobal = false,
+        calledLocal = false;
+
+    $3.sync(function(sync){
+      sync.find = function(query){
+        calledGlobal = true;
+      };
+    });
+
+    var Person = Model.define(new Sync(function(sync){
+      sync.find = function(){
+        calledLocal = true;
+      }
+    }));
+
+    Person.find().onValue(noop);
+
+    assert.equal(calledGlobal, false, "global sync not called with local sync defined");
+    assert.equal(calledLocal, true);
+
+  });
+
+  test("sync functions are observable", function(assert){
+    var called = false, actual = null, created = null, saved = false, instance;
+
+    var model = Model.define(new Sync(function(sync){
+      sync.find = function(query){
+        called = true;
+        return { id: query.id };
+      };
+
+      sync.create = function(obj){
+        console.log(obj);
+        obj._persisted = true;
+        return obj;
+      };
+
+      sync.save = function(){
+        saved = true;
+      };
+
+    }));
+
+    model.find({id: 1}).onValue(function(item){
       actual = item;
     });
 
-    assert.equal(called, true, "save was called");
-    assert.equal(actual._persisted, true, "item was saved");
+    model.create({id: 1, name: "joe"}).onValue(function(item){
+      created = item;
+    });
+
+    instance = new model;
+
+    instance.save().onValue(function(item){
+      saved = true;
+    });
+
+    assert.equal(called, true, "find was called");
+    assert.deepEqual(actual, {id: 1}, "retrieved item was passed into event");
+    assert.equal(created._persisted, true, "item was created");
+    assert.equal(saved, true, "item was saved");
   });
 
 });

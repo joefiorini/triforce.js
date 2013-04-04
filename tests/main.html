@@ -19,7 +19,7 @@
       baseUrl: "/lib",
       shim: {
         'prime': {
-          exports: 'prime',
+          exports: 'prime'
         },
         'gator': {
           exports: 'Gator'
@@ -31,6 +31,7 @@
         "gator": "/vendor/gator",
         "underscore": "/node_modules/lodash/lodash",
         "bacon": "/node_modules/baconjs/dist/bacon",
+        "jwerty": "/vendor/jwerty",
         "prime": "/node_modules/prime/index"
       }
     });
@@ -38,9 +39,11 @@
     require(['underscore',
              'bacon',
              'gator',
+             'jwerty',
              'tests/triforce-test',
              'tests/triad-test',
              'tests/model-test',
+             'tests/sync-test',
              'tests/controller-test'], function(){
       QUnit.start();
     });
