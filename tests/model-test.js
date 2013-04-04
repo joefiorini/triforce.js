@@ -14,7 +14,7 @@ define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
   });
 
   test("can define a model", function(assert){
-    assert.equal($3.model(), Model.define());
+    assert.equal($3.model, Model.define);
   });
 
   test("can decorate model with additional attributes", function(assert){
