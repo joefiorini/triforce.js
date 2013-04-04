@@ -3,42 +3,42 @@
 
   define(['triforce', 'lodash'], function($3, _){
 
-    var TodoStorage = {
-      loadAll: function(){
-        var todos = window.localStorage.getItem("todos")
+    var sync = new $3.Sync(function(sync){
+
+      sync.loadAll = function(){
+        var todos = window.localStorage.getItem("todos");
         if(todos){
           todos = JSON.parse(todos);
         }
         return todos;
-      },
-      load: function(id, todos){
-        var todos = (todos || this.loadAll());
+      };
+
+      sync.load = function(id, todos){
+        todos = (todos || this.loadAll());
         return todos.filter(function(todo){
-          todo.id == id;
+          return todo.id === id;
         })[0];
-      },
-      create: function(todo){
-        var todos = loadAll();
+      };
+
+      sync.create = function(todo){
+        var todos = sync.loadAll();
         todos.push(todo);
         window.localStorage.setItem("todos", JSON.stringify(todos));
-      },
-      save: function(todo){
-        var todos = TodoStorage.loadAll() || [],
+      };
+
+      sync.save = function(todo){
+        var todos = sync.loadAll() || [],
             candidate = todos.filter(function(item){
               return item.id === todo.id;
             });
 
         todos = _(todos).without(candidate).union([todo]);
         window.localStorage.setItem("todos", JSON.stringify(todos.value()));
-      }
-    }
+      };
 
-    return {
-      findAll: TodoStorage.loadAll,
-      save: TodoStorage.save,
-      create: TodoStorage.create,
-      find: TodoStorage.load
-    };
+    });
+
+    return sync;
 
   });
 
