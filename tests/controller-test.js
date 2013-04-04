@@ -7,12 +7,15 @@ define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM,
       el = document.querySelector("#qunit-fixture");
       view = { el: el };
       item = { blah: "doo", _persisted: false };
-      store = {
-        _persisted: false,
-        save: function(item){ item._persisted = true; return item; }
-      };
-      var model = new Model(store);
-      controller = new Controller(view, model);
+      var ModelC = Model.define(function(sync){
+        sync.save = function(item){
+          console.log("item: ", item);
+          item._persisted = true;
+          console.log("item: ", item);
+          return item;
+        };
+      });
+      controller = new Controller(view, new ModelC(item));
       called = false;
     }
   });
@@ -29,9 +32,7 @@ define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM,
       called = true;
     });
 
-    controller.setupListener(DOM.click(view.el));
-
-    view.el.click();
+    controller.setupListener(Bacon.fromArray(["blah"]));
 
     assert.equal(called, true);
   });
@@ -47,7 +48,7 @@ define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM,
       actual = v;
     });
 
-    controller.setupListener(DOM.click(view.el));
+    controller.setupListener(Bacon.fromArray(["blah"]));
 
     view.el.click();
 
@@ -80,21 +81,16 @@ define(['controller', 'model', 'dom', 'bacon'], function(Controller, Model, DOM,
   test("allows saving model value based on current stream", function(assert){
     var actual = null;
 
-    controller.convertsValue(function(val){
-      val.blah = "diddy";
-      return val;
-    });
-
     controller.save();
 
     controller.then(function(val){
-      actual = val;
+      actual = val[1];
     });
 
     controller.setupListener(Bacon.fromArray([item]));
 
-    assert.equal(item._persisted, true, "saved model");
-    assert.equal(actual.blah, "diddy", "updated value");
+    console.log(actual);
+    assert.equal(actual._persisted, true, "saved model");
   });
 
 });
