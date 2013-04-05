@@ -3,7 +3,7 @@
 
   define(['triforce', 'lodash'], function($3, _){
 
-    var sync = new $3.Sync(function(sync){
+    $3.sync(function(sync){
 
       sync.loadAll = function(){
         var todos = window.localStorage.getItem("todos");
@@ -38,7 +38,8 @@
 
     });
 
-    return sync;
+    var Todo = $3.model();
+    return Todo;
 
   });
 
