@@ -1,4 +1,4 @@
-define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
+define(["model", "sync", "triforce", "prime", "bacon"], function(Model, Sync, $3, prime, Bacon){
 
   var person;
   var noop = function(){ };
@@ -130,6 +130,31 @@ define(["model", "sync", "triforce", "prime"], function(Model, Sync, $3, prime){
     assert.deepEqual(actual, {id: 1}, "retrieved item was passed into event");
     assert.equal(created._persisted, true, "item was created");
     assert.equal(saved, true, "item was saved");
+  });
+
+  test("can plug saving into a stream", function(assert){
+
+    var ModelC = Model.define(function(sync){
+      sync.save = function(item){
+        called = true;
+        item._persisted = true;
+      };
+    });
+
+    var model = new ModelC();
+    model._persisted = false;
+
+    var stream = Bacon.fromArray([model]),
+        called = false, actual = null;
+
+    var newStream = model.saveOnChange(stream);
+
+    newStream.onValue(function(item){
+      actual = item;
+    });
+
+    assert.equal(called, true, "save was called");
+    assert.equal(actual._persisted, true, "item was modified");
   });
 
 });

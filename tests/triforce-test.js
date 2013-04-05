@@ -65,14 +65,7 @@ define(['triforce'], function($3){
 
     var expected = TestFeature.model;
 
-    model = {
-      firstName: "blah",
-      lastName: "diddy"
-    };
-
-    $3(TestFeature, model, $3.DOM.click);
-
-    expected.decorate(model);
+    $3(TestFeature, expected, $3.DOM.click);
 
     assert.equal(actual, expected);
   });
